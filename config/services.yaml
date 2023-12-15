@@ -1,0 +1,25 @@
+# config/services.yaml
+
+parameters:
+  env(MONGODB_URL): ""
+  env(MONGODB_DB): ""
+
+services:
+  # Configuration par défaut pour les services dans ce fichier
+  _defaults:
+    autowire: true # Injection automatique des dépendances.
+    autoconfigure: true # Enregistrement automatique en tant que commandes, abonnés d'événements, etc.
+
+  # Rend les classes dans src/ disponibles en tant que services
+  # Crée un service pour chaque classe avec un ID correspondant au nom complet de la classe
+  App\:
+    resource: "../src/"
+    exclude:
+      - "../src/DependencyInjection/"
+      - "../src/Entity/"
+      - "../src/Kernel.php"
+
+  # Déclaration du service JwtToken
+  App\Services\JwtToken:
+    arguments:
+      $secretKey: "%env(JWT_SECRET_KEY)%" # Injection de la clé secrète JWT
